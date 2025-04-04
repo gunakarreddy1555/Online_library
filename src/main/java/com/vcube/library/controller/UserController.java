@@ -165,7 +165,7 @@ public class UserController {
 
 	}
 
-//	 show user whistlelist book 
+//	 show user whistlist book 
 
 	@GetMapping("/mybook")
 	public String mybook(Model model) {
@@ -181,9 +181,9 @@ public class UserController {
 
 	@RequestMapping("/deletemybook/{id}")
 	public String deletelistbook(@PathVariable("id") int id) {
+	System.out.println("=====================================");
 		User user = (User) session.getAttribute("userdetails");
 		User userByid = serv.getUserByid(user.getId());
-
 		Set<Books> list = userByid.getListofbooks();
 		for (Books b1 : list) {
 
@@ -191,14 +191,17 @@ public class UserController {
 				list.remove(b1);
 			}
 		}
+		System.out.println(list+" afterremovbe ");
+		userByid.setListofbooks(list);
 		User user3 = serv.saveUser(user);
-		session.removeAttribute("userdetails");
-		session.setAttribute("userdetails", user3);
+		System.out.println(user3.getListofbooks());
+		System.out.println("session-----------------------------------");
+		session.setAttribute("userdetails",user3);
 
 		return "redirect:/mybook";
 	}
 
-//	to show avilable books to admin
+//	to show available books to Admin
 
 	@GetMapping("adminavailablebooks")
 	public String AdminBooks(Model model) {
@@ -243,7 +246,7 @@ public class UserController {
 		return "Allusersinfo";
 	}
 
-//	inactive user byid 
+//	inactive user ById 
 	@RequestMapping("/deleteUserByid/{id}")
 	public String deleteUserByid(@PathVariable("id") int id) {
 		
